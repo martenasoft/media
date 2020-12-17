@@ -1,2 +1,5 @@
-media:
+media_admin:
   resource: '@MartenaSoftMediaBundle/Resources/config/routes/admin.yaml'
+
+media_forntend:
+  resource: '@MartenaSoftMediaBundle/Resources/config/routes/frontend.yaml'
