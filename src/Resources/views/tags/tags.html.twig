@@ -1,0 +1,63 @@
+{% if entity.title() is not empty %}
+    <title>{% block title %}{{ entity.title() }} {% endblock %}</title>
+{% endif %}
+{% if entity.description() is not empty %}
+    <meta name="description" content="{{ entity.description() }}" />
+{% endif %}
+{% if entity.keywords() is not empty %}
+    <meta name="keywords" content="{{ entity.keywords() }}" />
+{% endif %}
+{% if entity.ogSiteName() is not empty %}
+    <meta name="author" content="{{ entity.ogSiteName() }}" />
+{% endif %}
+{% if entity.copyright() is not empty %}
+    <meta name="copyright" content="{{ entity.copyright() }}" />
+{% endif %}
+{% if entity.documentState() is not empty %}
+    <meta name="document-state" content="{{ entity.documentState() }}" />
+{% endif %}
+{% if entity.revisit() is not empty %}
+    <meta name="revisit" content="{{ entity.revisit() }}" />
+{% endif %}
+{% if entity.url() is not empty %}
+    <meta name="url" content="{{ entity.url() }}" />
+{% endif %}
+{% if entity.viewport() is not empty %}
+    <meta name="viewport" content="{{ entity.viewport() }}" />
+{% endif %}
+{% if entity.cacheControl() is not empty %}
+    <meta http-equiv="Cache-Control" content="{{ entity.cacheControl() }}" />
+{% endif %}
+{% if entity.expires() is not empty %}
+    <meta http-equiv="Expires" content="{{ entity.expires() }}" />
+{% endif %}
+{% if entity.contentLanguage() is not empty %}
+    <meta http-equiv="content-language" content="{{ entity.contentLanguage() }}" />
+{% endif %}
+{% if entity.charset() is not empty %}
+    <meta name="charset" content="{{ entity.charset() }}" />
+{% endif %}
+{% if entity.ogDescription() is not empty %}
+    <meta property="og:description" content="{{ entity.ogDescription() }}" />
+{% endif %}
+{% if entity.ogImage() is not empty %}
+    <meta property="og:image" content="{{ entity.ogImage() }}" />
+{% endif %}
+{% if entity.ogUrl() is not empty %}
+    <meta property="og:url" content="{{ entity.ogUrl() }}" />
+{% endif %}
+{% if entity.ogSiteName() is not empty %}
+    <meta property="og:site_name" content="{{ entity.ogSiteName() }}" />
+{% endif %}
+{% if entity.twitterImageAlt() is not empty %}
+    <meta property="twitter:image:alt" content="{{ entity.twitterImageAlt() }}" />
+{% endif %}
+{% if entity.twitterCard() is not empty %}
+    <meta property="twitter:card" content="{{ entity.twitterCard() }}" />
+{% endif %}
+{% if entity.twitterSite() is not empty %}
+    <meta property="twitter:site" content="{{ entity.twitterSite() }}" />
+{% endif %}
+{% if entity.ogTitle() is not empty %}
+    <meta property="og:title" content="{{ entity.ogTitle() }}" />
+{% endif %}
