@@ -1,0 +1,9 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+{% block h1 %} {{ h1 }} {% endblock %}
+
+{% block body %}
+    {% include '@MartenaSoftMedia/mediaConfig/form.html.twig' with form %}
+{% endblock %}
+

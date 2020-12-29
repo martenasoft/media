@@ -3,17 +3,18 @@
 namespace MartenaSoft\Media\Entity;
 
 use  Doctrine\ORM\Mapping as ORM;
+use MartenaSoft\Common\Entity\CommonEntityInterface;
 use Symfony\Component\Validator\Constraint as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MartenaSoft\Media\Repository\MediaConfigRepository;
 
 /**
- * @ORM\Entity(repositoryClass="MediaConfigRepository")
+ * @ORM\Entity(repositoryClass="MartenaSoft\Media\Repository\MediaConfigRepository")
  * @UniqueEntity (
  *     fields={"name"}
  * )
  */
-class MediaConfig
+class MediaConfig implements CommonEntityInterface
 {
     /**
      * @ORM\Id
@@ -71,12 +72,12 @@ class MediaConfig
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $bigSizeWidth= null;
+    private ?int $bigSizeWidth = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $bigSizeHeight= null;
+    private ?int $bigSizeHeight = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -86,17 +87,17 @@ class MediaConfig
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $middleSizeHeight= null;
+    private ?int $middleSizeHeight = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $smallSizeWidth= null;
+    private ?int $smallSizeWidth = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $smallSizeHeight= null;
+    private ?int $smallSizeHeight = null;
 
     /**
      * @ORM\Column(nullable=true)

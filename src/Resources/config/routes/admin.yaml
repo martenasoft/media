@@ -1,0 +1,15 @@
+admin_mediaconfig_index:
+  path: /config
+  controller: 'MartenaSoft\Media\Controller\MediaConfigAdminController::index'
+
+admin_mediaconfig_create:
+  path: /create
+  controller: 'MartenaSoft\Media\Controller\MediaConfigAdminController::save'
+
+admin_mediaconfig_edit:
+  path: /edit/{id}
+  controller: 'MartenaSoft\Media\Controller\MediaConfigAdminController::save'
+
+admin_mediaconfig_delete:
+  path: /delete/{id}
+  controller: 'MartenaSoft\Media\Controller\MediaConfigAdminController::delete'
