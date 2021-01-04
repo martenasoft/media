@@ -24,6 +24,7 @@ class MediaConfigFormType extends AbstractType
             ->add('bigSizeWidth')
             ->add('bigSizeHeight')
             ->add('middleSizeWidth')
+            ->add('middleSizeHeight')
             ->add('smallSizeWidth')
             ->add('smallSizeHeight')
             ->add('realSizeWatermarkDirName')

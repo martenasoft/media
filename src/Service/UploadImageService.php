@@ -42,45 +42,59 @@ class UploadImageService
 
         $parameters = $this->kernel->getContainer()->getParameter(MartenaSoftMediaBundle::getConfigName());
 
-        $templateDirectory = $parameters['tmp_dir'];
-
-        $this->directoryManagerService->createDirByPath($templateDirectory);
-
-        die("file: ".__FILE__ ." line: ".__LINE__);
-
+        $tmpFile = $uploadedFile->getRealPath();
         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename. '-' . uniqid().'.'.$uploadedFile->guessExtension();
 
-        try {
-          //  $mediaConfig->setRealSizeDirName('img/article/real');
+       /* if (!empty($mediaConfig->getRealSizeDirName())) {
             $realSizeDir = $this->getPath($mediaConfig->getRealSizeDirName(), $publicDir, $projectDir);
-
-            if ($realSizeDir !== null) {
-
-            } else {
-
-                $this->logger->warning("sdsdsd");
-                dump($templateDirectory);
-            }
-
-          //  die("file: ".__FILE__ ." line: ".__LINE__);
-          /*  if (empty($mediaConfig)) {
+            $uploadedFile->move($realSizeDir, $fileName);
+            $tmpFile = $realSizeDir . DIRECTORY_SEPARATOR .  $fileName;
+        }*/
 
 
-                throw \Exception('This functional is in developing process');
-               // $uploadedFile->move($this->getTargetDirectory(), $fileName);
-            }*/
+        if (!empty($bigSizeDirName = $mediaConfig->getBigSizeDirName())) {
+            $bigSizeDir = $this->getPath($bigSizeDirName, $publicDir, $projectDir);
+            $bigFile = $bigSizeDir. DIRECTORY_SEPARATOR . $fileName;
 
+            $this->resize($tmpFile, $bigFile, $mediaConfig->getBigSizeWidth(), $mediaConfig->getBigSizeHeight());
+        }
 
-        } catch (CommonException | FileException | \Throwable $exception) {
+        if (!empty($middleSizeDirName = $mediaConfig->getMiddleSizeDirName())) {
+            $middleSizeDir = $this->getPath($middleSizeDirName, $publicDir, $projectDir);
+            $middleFile = $middleSizeDir. DIRECTORY_SEPARATOR . $fileName;
 
-            throw $exception;
+            $this->resize(
+                $tmpFile,
+                $middleFile,
+                $mediaConfig->getMiddleSizeWidth(),
+                $mediaConfig->getMiddleSizeHeight()
+            );
+        }
+
+        if (!empty($smallSizeDirName = $mediaConfig->getSmallSizeDirName())) {
+            $smallSizeDir = $this->getPath($smallSizeDirName, $publicDir, $projectDir);
+            $smallFile = $smallSizeDir. DIRECTORY_SEPARATOR . $fileName;
+
+            $this->resize(
+                $tmpFile,
+                $smallFile,
+                $mediaConfig->getSmallSizeWidth(),
+                $mediaConfig->getSmallSizeHeight()
+            );
         }
 
         return $fileName;
     }
 
+
+    public function resize(string $realFile, string $newFileName, int $width, int $height): void
+    {
+        $imagick = new \Imagick($realFile);
+        $imagick->thumbnailImage($width, $height, true, true);
+        $imagick->writeImage($newFileName);
+    }
 
     public function setTargetDirectory(string $targetDirectory): void
     {
@@ -95,7 +109,8 @@ class UploadImageService
     protected function getPath(
         ?string $path = null,
         string $publicDir = 'public',
-        ?string $projectDir = null
+        ?string $projectDir = null,
+        bool $isCreateDir = true
     ): ?string {
 
         if (empty($path) || empty($this->kernel->getProjectDir())) {
@@ -108,15 +123,27 @@ class UploadImageService
                 $publicDir
             ;
         }
-
         $result = preg_replace( '/(\/{2,})/', '/', $projectDir . DIRECTORY_SEPARATOR . $path);
         $result = preg_replace('/\/{1,}$/', '', $result);
-        if (!is_writable($result)) {
-            $commonException = new CommonException('Directory: '.$result . ' is not available');
-            $commonException
-                ->setUserMessage('Directory: '
-                    . $publicDir. DIRECTORY_SEPARATOR . $path . ' is not available');
-            throw $commonException;
+
+        if ($isCreateDir) {
+            try {
+
+                if (!empty($result) && !is_dir($result) && !mkdir($result, 0777, true)) {
+                    $messageArray = error_get_last();
+                    $message = "Error create directory";
+
+                    if (!empty($messageArray['message'])) {
+                        $message = $messageArray['message'];
+                    }
+
+                    $exception = new CommonException($message .': '.$result);
+                    $exception->setUserMessage($message.': '.$path);
+                }
+
+            } catch (FileException | \Throwable $exception) {
+                throw $exception;
+            }
         }
         return $result;
     }
